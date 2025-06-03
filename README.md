@@ -14,9 +14,10 @@ For more about MCP, see [modelcontextprotocol.io](https://modelcontextprotocol.i
 
 This server exposes the following **MCP tools** for use by LLMs and agentic clients:
 
-- **create_app**: Scaffold a new Echo web application.
-- **create_model**: Create a new GORM-compatible model and its repository files.
-- **create_model_controller**: Create a new controller for a given model.
+- **generate_app_boilerplate**: Scaffold a new Echo web application.
+- **generate_model_boilerplate**: Generate boilerplate for a new GORM-compatible model and its repository files.
+- **generate_controller_boilerplate**: Generate boilerplate for a new controller for a given model.
+- **generate_service_boilerplate**: Generate boilerplate for a new service layer with DTOs (Data Transfer Objects) for a given model.
 - **fix_app**: Provide pointers on common issues and how to address them in an Echo web application.
 
 Each tool is defined with a clear input schema and returns detailed instructions or code templates for building Go web applications.
@@ -48,6 +49,17 @@ mcpgo
 
 > **Note:** The server will wait for MCP stdio messages on stdin and write responses to stdout. It is not intended to be run as a standalone HTTP server.
 
+### Creating a User Model Application
+
+A common use case for this tool is to create an app that has a 'user' model and model controllers. Here's how to do it:
+
+1. Use the `generate_app_boilerplate` tool to scaffold a new Echo web application
+2. Use the `generate_model_boilerplate` tool to generate boilerplate for a User model with appropriate fields
+3. Use the `generate_controller_boilerplate` tool to generate boilerplate for controllers for the User model
+4. Use the `generate_service_boilerplate` tool to generate boilerplate for a service layer for the User model
+
+**Important:** mcpgo doesn't create the files for you. It provides detailed instructions and code templates that you need to implement yourself. Don't make assumptions - use what's outputted from the MCP and create the files as needed following the instructions provided.
+
 ## Integrating with MCP Clients
 
 To use this server with an MCP-compatible client:
@@ -71,9 +83,10 @@ For example, in [Claude Desktop](https://claude.ai/download), you can add this s
 
 | Tool Name               | Description                                                        |
 |-------------------------|--------------------------------------------------------------------|
-| `create_app`            | Scaffold a new Echo web application.                               |
-| `create_model`          | Create a new GORM-compatible model and its repository files.       |
-| `create_model_controller` | Create a new controller for a given model.                       |
+| `generate_app_boilerplate` | Scaffold a new Echo web application.                            |
+| `generate_model_boilerplate` | Generate boilerplate for a new GORM-compatible model and its repository files. |
+| `generate_controller_boilerplate` | Generate boilerplate for a new controller for a given model. |
+| `generate_service_boilerplate` | Generate boilerplate for a new service layer with DTOs for a given model. |
 | `fix_app`               | Provide pointers on common issues in an Echo web application.      |
 
 Each tool expects specific input parameters (see the code or MCP client UI for details).
