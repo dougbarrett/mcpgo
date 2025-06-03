@@ -30,6 +30,9 @@ func main() {
 	// Tool: create_model
 	createModelTool := mcp.NewTool("create_model",
 		mcp.WithDescription("Instructs the LLM to create a new GORM-compatible model and its repository files."),
+		mcp.WithString("app_name",
+			mcp.Description("The name of the application (e.g., mcpgo-app). This is used to generate correct import paths."),
+		),
 		mcp.WithString("model_name",
 			mcp.Required(),
 			mcp.Description("The name of the model (e.g., User, Product)."),
@@ -44,6 +47,9 @@ func main() {
 	// Tool: create_model_controller
 	createModelControllerTool := mcp.NewTool("create_model_controller",
 		mcp.WithDescription("Instructs the LLM to create a new controller for a given model."),
+		mcp.WithString("app_name",
+			mcp.Description("The name of the application (e.g., mcpgo-app). This is used to generate correct import paths."),
+		),
 		mcp.WithString("model_name",
 			mcp.Required(),
 			mcp.Description("The name of the model for which to create a controller (e.g., User, Product)."),
@@ -185,6 +191,10 @@ func hello(c echo.Context) error {
 
 // Handler for create_model
 func createModelHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	appName := request.GetString("app_name", "") // Default app name if not provided
+	if appName == "" {
+		return mcp.NewToolResultError("App name is required"), nil
+	}
 	modelName, err := request.RequireString("model_name")
 	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("Error getting 'model_name': %v", err.Error())), nil
@@ -397,7 +407,7 @@ func hello(c echo.Context) error {
 		modelContent,   // %[3]s
 		titleModelName, // %[4]s
 		lowerModelName, // %[5]s
-		"mcpgo-app",    // %[6]s - Hardcoded for now, ideally passed from createAppHandler
+		appName,        // %[6]s - Hardcoded for now, ideally passed from createAppHandler
 	)
 
 	return mcp.NewToolResultText(response), nil
@@ -405,6 +415,10 @@ func hello(c echo.Context) error {
 
 // Handler for create_model_controller
 func createModelControllerHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	appName := request.GetString("app_name", "") // Default app name if not provided
+	if appName == "" {
+		return mcp.NewToolResultError("App name is required"), nil
+	}
 	modelName, err := request.RequireString("model_name")
 	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("Error getting 'model_name': %v", err.Error())), nil
@@ -575,7 +589,7 @@ func (ctrl *%[3]sControllerImpl) Get%[3]sByID(c echo.Context) error {
 		lowerModelName, // %[2]s
 		titleModelName, // %[3]s
 		lowerModelName, // %[4]s
-		"mcpgo-app",    // %[5]s - Hardcoded for now, ideally passed from createAppHandler
+		appName,        // %[5]s - Hardcoded for now, ideally passed from createAppHandler
 	)
 
 	return mcp.NewToolResultText(response), nil
