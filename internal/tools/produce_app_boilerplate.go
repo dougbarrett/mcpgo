@@ -9,7 +9,7 @@ import (
 
 // GetProduceAppBoilerplateTool returns the tool definition for produce_app_boilerplate
 func GetProduceAppBoilerplateTool() (mcp.Tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)) {
-	tool := mcp.NewTool("produce_app_boilerplate",
+	tool := mcp.NewTool("start_here_produce_app_boilerplate",
 		mcp.WithDescription("Instructs the LLM to output an example scaffold a new Echo web application."),
 		mcp.WithString("app_name",
 			mcp.Required(),
@@ -136,6 +136,78 @@ func hello(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!")
 }
 `+"```"+`
+
+## Next Steps: Building Your Application Components
+
+After setting up the basic application structure, you can use the following tools to create the various components of your application:
+
+### 1. Create Models
+
+Use the `+"`produce_model_boilerplate`"+` tool to generate model code:
+
+`+"```"+`
+produce_model_boilerplate app_name="%[1]s" model_name="User" fields="ID:uint,Name:string,Email:string,CreatedAt:time.Time,UpdatedAt:time.Time"
+`+"```"+`
+
+This will generate a model with the specified fields, along with a repository interface and implementation.
+
+### 2. Create Services
+
+Use the `+"`produce_service_boilerplate`"+` tool to generate service layer code:
+
+`+"```"+`
+produce_service_boilerplate app_name="%[1]s" model_name="User"
+`+"```"+`
+
+This will create a service that handles business logic for your model, connecting to the repository layer.
+
+### 3. Create Controllers
+
+Depending on your needs, you can create either API-based controllers or HTML-based controllers:
+
+#### For API Controllers:
+
+`+"```"+`
+produce_api_controller_boilerplate app_name="%[1]s" model_name="User"
+`+"```"+`
+
+This will generate RESTful API endpoints for your model.
+
+#### For HTML Controllers:
+
+`+"```"+`
+produce_html_controller_boilerplate app_name="%[1]s" model_name="User" template_engine="html/template"
+`+"```"+`
+
+This will create controllers that render HTML templates and handle form submissions.
+
+### 4. Integrate Components
+
+After generating these components, update your `+"`cmd/web/main.go`"+` file to:
+- Import all the necessary packages
+- Initialize the database connection
+- Auto-migrate your models
+- Create instances of repositories, services, and controllers
+- Register routes for your controllers
+
+### 5. Add Dependencies
+
+Don't forget to add the required dependencies:
+
+`+"```"+`
+cd %[1]s && go get gorm.io/gorm gorm.io/driver/sqlite github.com/labstack/echo/v4
+`+"```"+`
+
+### 6. Run and Test
+
+After setting up all components, run your application:
+
+`+"```"+`
+cd %[1]s && go run ./cmd/web
+`+"```"+`
+
+Test your endpoints using a tool like curl, Postman, or a web browser depending on your controller type.
+
 `, appName, appName, appName, appName, appName, appName)
 
 	return mcp.NewToolResultText(response), nil

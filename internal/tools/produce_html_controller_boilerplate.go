@@ -198,7 +198,7 @@ dev:
 package layouts
 
 import (
-	"%[5]s/ui/modules"
+	"%[5]s/modules"
 )
 
 templ ThemeSwitcherScript() {
@@ -274,8 +274,8 @@ templ Navbar() {
 `+"```go"+`
 package modules
 
-import "%[5]s/ui/components/button"
-import "%[5]s/ui/components/icon"
+import "%[5]s/components/button"
+import "%[5]s/components/icon"
 
 templ themeSwitcherHandler() {
 	{{ handle := templ.NewOnceHandle() }}
@@ -345,10 +345,10 @@ templ LightIcon() {
 package %[2]spages
 
 import (
-	"%[5]s/ui/layouts"
-	"%[5]s/ui/components/button"
-	"%[5]s/ui/components/alert"
-	"%[5]s/ui/components/icon"
+	"%[5]s/layouts"
+	"%[5]s/components/button"
+	"%[5]s/components/alert"
+	"%[5]s/components/icon"
 	"%[5]s/internal/dto"
 )
 
@@ -478,10 +478,10 @@ func min(a, b int) int {
 package %[2]spages
 
 import (
-	"%[5]s/ui/layouts"
-	"%[5]s/ui/components/button"
-	"%[5]s/ui/components/alert"
-	"%[5]s/ui/components/icon"
+	"%[5]s/layouts"
+	"%[5]s/components/button"
+	"%[5]s/components/alert"
+	"%[5]s/components/icon"
 	"%[5]s/internal/dto"
 )
 
@@ -561,11 +561,11 @@ templ Show(item dto.%[3]sResponse) {
 package %[2]spages
 
 import (
-	"%[5]s/ui/layouts"
-	"%[5]s/ui/components/button"
-	"%[5]s/ui/components/input"
-	"%[5]s/ui/components/checkbox"
-	"%[5]s/ui/components/alert"
+	"%[5]s/layouts"
+	"%[5]s/components/button"
+	"%[5]s/components/input"
+	"%[5]s/components/checkbox"
+	"%[5]s/components/alert"
 	"%[5]s/internal/dto"
 )
 
@@ -689,7 +689,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"%[5]s/internal/service"
 	"%[5]s/internal/dto"
-	"%[5]s/ui/pages/%[2]s"
+	"%[5]s/pages/%[2]s"
 )
 
 type %[3]sHtmlController interface {
